@@ -1,26 +1,350 @@
 @import "tailwindcss";
 
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-2%, 3%) scale(1.05);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+@keyframes resume-border-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes resume-shine-sweep {
+  0% {
+    transform: translateX(-120%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(220%) skewX(-15deg);
+  }
+}
+
+@keyframes resume-icon-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .resume-highlight-border::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--accent-from),
+      var(--accent-to),
+      transparent
+    );
+    background-size: 200% 100%;
+    animation: resume-border-flow 3s linear infinite;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .resume-shine-sweep::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      color-mix(in srgb, var(--accent-from) 18%, transparent) 50%,
+      transparent 60%
+    );
+    animation: resume-shine-sweep 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .resume-icon-animate {
+    animation: resume-icon-bounce 2s ease-in-out infinite;
+  }
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafafa;
+  --foreground: #09090b;
+  --muted: #71717a;
+  --muted-foreground: #52525b;
+  --border: rgba(9, 9, 11, 0.08);
+  --border-strong: rgba(9, 9, 11, 0.14);
+  --accent: #2563eb;
+  --accent-from: #2563eb;
+  --accent-to: #7c3aed;
+  --accent-soft: rgba(37, 99, 235, 0.1);
+  --accent-glow: rgba(37, 99, 235, 0.25);
+  --card: #ffffff;
+  --surface: #f4f4f5;
+  --grid: rgba(9, 9, 11, 0.04);
+  --shine: rgba(255, 255, 255, 0.6);
+}
+
+.dark {
+  --background: #020202;
+  --foreground: #f4f4f5;
+  --muted: #71717a;
+  --muted-foreground: #a1a1aa;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.13);
+  --accent: #60a5fa;
+  --accent-from: #60a5fa;
+  --accent-to: #a78bfa;
+  --accent-soft: rgba(96, 165, 250, 0.12);
+  --accent-glow: rgba(96, 165, 250, 0.2);
+  --card: #080808;
+  --surface: #0f0f0f;
+  --grid: rgba(255, 255, 255, 0.025);
+  --shine: rgba(255, 255, 255, 0.05);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-card: var(--card);
+  --color-surface: var(--surface);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+  color: var(--foreground);
+}
+
+/* Ambient page background */
+.page-bg {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% -25%, var(--accent-soft), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 100% 20%, color-mix(in srgb, var(--accent-to) 10%, transparent), transparent),
+    radial-gradient(ellipse 40% 30% at 0% 70%, color-mix(in srgb, var(--accent-from) 8%, transparent), transparent),
+    var(--background);
+}
+
+.page-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+  pointer-events: none;
+}
+
+.dark .page-bg::before {
+  opacity: 0.18;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
+}
+
+@keyframes grid-drift {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: 72px 72px, 72px 72px;
+  }
+}
+
+.subtle-glow {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--accent-glow) 0%,
+    var(--accent-soft) 40%,
+    transparent 70%
+  );
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .subtle-glow {
+    animation: float 12s ease-in-out infinite;
+  }
+
+  .grid-bg {
+    animation: grid-drift 20s linear infinite;
+  }
+}
+
+.section-padding {
+  @apply px-5 py-12 md:px-8 md:py-14 lg:px-10 lg:py-16;
+}
+
+.container-narrow {
+  @apply mx-auto w-full max-w-[1120px];
+}
+
+.container-wide {
+  @apply mx-auto w-full max-w-[1280px];
+}
+
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+}
+
+/* Premium card */
+.panel {
+  @apply rounded-2xl border bg-card transition-all duration-500;
+  border-color: var(--border);
+  box-shadow:
+    0 0 0 1px var(--shine) inset,
+    0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.dark .panel {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 24px 48px -24px rgba(0, 0, 0, 0.5);
+}
+
+.panel:hover {
+  border-color: var(--border-strong);
+}
+
+.panel-interactive {
+  @apply transition-all duration-300;
+}
+
+.panel-interactive:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 16px 40px -20px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+/* Section label pill */
+.label-pill {
+  @apply inline-flex items-center rounded-full border px-3 py-1 font-mono text-[11px] uppercase tracking-[0.18em];
+  border-color: var(--border);
+  color: var(--muted);
+  background: var(--surface);
+}
+
+/* Divider with fade */
+.divider-fade {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--border-strong) 20%,
+    var(--border-strong) 80%,
+    transparent
+  );
+}
+
+/* Hero headline */
+.headline-display {
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
+.text-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--foreground) 0%,
+    var(--foreground) 35%,
+    var(--accent-from) 65%,
+    var(--accent-to) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.section-band {
+  position: relative;
+  border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 40%, transparent);
+}
+
+.btn-glow {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent-from) 30%, transparent),
+    0 8px 32px -8px var(--accent-glow);
 }
