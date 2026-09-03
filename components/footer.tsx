@@ -7,7 +7,7 @@ export function Footer() {
 
   return (
     <footer className="border-t border-[var(--border)]">
-      <div className="container-narrow section-padding !py-10">
+      <div className="container-narrow section-padding !py-10 pb-24 md:pb-10">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-lg font-semibold tracking-tight">{profile.name}</p>
@@ -42,14 +42,6 @@ export function Footer() {
               <LinkedInIcon className="h-4 w-4" />
             </a>
             <ResumeDownload variant="footer" />
-            <a
-              href={profile.bookingUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="focus-ring rounded-full border border-[var(--border)] px-4 py-2.5 font-mono text-xs text-muted-foreground transition-colors hover:border-[var(--border-strong)] hover:text-foreground"
-            >
-              Book a meeting
-            </a>
             <a
               href={`mailto:${profile.email}`}
               className="focus-ring rounded-full border border-[var(--border)] px-4 py-2.5 font-mono text-xs text-muted-foreground transition-colors hover:border-[var(--border-strong)] hover:text-foreground"

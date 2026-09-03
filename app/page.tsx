@@ -12,11 +12,13 @@ import { About } from "@/components/sections/about";
 import { Writing } from "@/components/sections/writing";
 import { GitHubSection } from "@/components/sections/github-section";
 import { Contact } from "@/components/sections/contact";
+import { BookingFab } from "@/components/ui/booking-fab";
 
 export default function Home() {
   return (
     <>
       <Navigation />
+      <BookingFab />
       <main id="main-content" className="divide-y divide-[var(--border)]">
         <Hero />
         <FeaturedProject />

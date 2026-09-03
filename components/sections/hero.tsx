@@ -7,7 +7,7 @@ import { ResumeDownload } from "@/components/ui/resume-download";
 import { TypewriterCTA } from "@/components/ui/typewriter";
 import { GitHubIcon, LinkedInIcon } from "@/components/icons/social";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Calendar } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 const terminalLines = [
   { prompt: "cert", text: "Microsoft DP-100 · Azure ML", accent: true },
@@ -104,16 +104,6 @@ export function Hero() {
               <div className="mt-7 flex flex-wrap items-center gap-3">
                 <Button href="#ai-products" size="lg">
                   View AI Products
-                </Button>
-                <Button
-                  href={profile.bookingUrl}
-                  variant="secondary"
-                  size="lg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Calendar className="h-4 w-4" />
-                  Book a meeting
                 </Button>
                 <ResumeDownload size="lg" />
                 <Button href={`mailto:${profile.email}`} variant="ghost" size="lg">
